@@ -101,6 +101,11 @@ def draw_fraction_circle(ax, numerator, denominator, colors, title):
     ax.axis('off')
 
 def main():
+    if 'expression' not in st.session_state:
+        st.session_state.expression = "1/6-2/3+4/9"
+    
+    # Rest of your code using st.session_state.expression
+    # ...
     st.title("🍕 Fraction Visualizer")
     st.markdown("""
     Enter fractions with + or - between them (e.g., `1/6-2/3+4/9`)
@@ -209,6 +214,11 @@ def main():
             - 5/5+6/10-1/20
             - 1/2+1/3-1/4
             """)
+
+        with col2:
+        if st.button("Random Example"):
+            examples = ["1/2+1/4+1/8", "2/3-1/6+3/4", "5/6+1/3-1/2", "3/4-1/2+5/8"]
+            st.session_state.expression = np.random.choice(examples)
 
 if __name__ == "__main__":
     main()
