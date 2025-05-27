@@ -5,7 +5,7 @@ import numpy as np
 from math import gcd
 from functools import reduce
 
-# Set page config
+# Set page config for better layout
 st.set_page_config(page_title="Fraction Visualizer", layout="wide")
 
 def prime_factors(n):
@@ -22,7 +22,7 @@ def prime_factors(n):
         i += 2
     if n > 1:
         factors[n] = 1
-    return [f"{p}^{e}" if e>1 else str(p) for p,e in factors.items()]
+    return [f"{p}{'^'+str(e) if e>1 else ''}" for p, e in factors.items()]
 
 def lcm(a, b):
     """Calculate the Least Common Multiple of two numbers."""
@@ -106,24 +106,20 @@ def main():
     Enter fractions with + or - between them (e.g., `1/6-2/3+4/9`)
     """)
     
-    # Initialize session state
-    if 'expression' not in st.session_state:
-        st.session_state.expression = "1/6-2/3+4/9"
-    
     # Input section
     col1, col2 = st.columns([3, 1])
     with col1:
-        expression = st.text_input("Expression:", st.session_state.expression)
+        expression = st.text_input("Expression:", "1/6-2/3+4/9")
     with col2:
         st.write("")  # Spacer
-        if st.button("Random Example"):
-            examples = ["1/2+1/4+1/8", "2/3-1/6+3/4", "5/6+1/3-1/2", "3/4-1/2+5/8"]
-            st.session_state.expression = np.random.choice(examples)
-            # No need for rerun() - Streamlit will auto-update
+        #if st.button("Random Example"):
+        #    examples = ["1/2+1/4+1/8", "2/3-1/6+3/4", "5/6+1/3-1/2", "3/4-1/2+5/8"]
+        #    expression = np.random.choice(examples)
+        #    st.experimental_rerun()
     
     if st.button("Solve"):
         try:
-            parts = parse_expression(st.session_state.expression)
+            parts = parse_expression(expression)
             fractions = [part for part in parts if isinstance(part, tuple)]
             operators = [part for part in parts if isinstance(part, str)]
             denominators = [f[1] for f in fractions]
